@@ -6,7 +6,7 @@ Registro prático da construção de um ambiente de banco de dados relacional My
 
 * Rede VPC: Segmentação do ambiente em subredes públicas para a camada web e subredes privadas para a camada de dados distribuídas em duas Zonas de Disponibilidade.
 * Servidor de Aplicação: Instância EC2 pública responsável por processar a interface e a lógica da aplicação.
-* Base de Dados: Instância Amazon RDS MySQL configurada com réplica de failover automática em modo Multi AZ.
+* Base de Dados: Instância Amazon RDS MySQL configurada em subredes privadas.
 * Controle de Acesso: Políticas de firewall Security Groups baseadas no princípio do menor privilégio, liberando a porta 3306 exclusivamente para a camada web.
 
 ## Recursos e Tecnologias
@@ -18,23 +18,27 @@ Registro prático da construção de um ambiente de banco de dados relacional My
 ## Procedimento de Execução
 
 1. Definição de Regras de Firewall: Configuração do Security Group do banco para aceitar tráfego de entrada na porta 3306 vindo unicamente do Security Group da instância EC2.
-2. Agrupamento de Subredes: Alocação de subredes privadas de diferentes zonas no DB Subnet Group para habilitar o suporte à alta disponibilidade.
-3. Provisionamento do Banco: Deploy do banco de dados MySQL lab db ativando o recurso Multi AZ.
-4. Validação e Conectividade: Apontamento da aplicação web para o Endpoint gerado pelo RDS e teste de persistência dos dados inseridos no formulário.
+2. Agrupamento de Subredes: Alocação de subredes privadas de diferentes zonas no DB Subnet Group para habilitar o suporte à infraestrutura de dados.
+3. Provisionamento do Banco: Deploy da instância do banco de dados MySQL no Amazon RDS.
+4. Validação e Conectividade: Apontamento da aplicação web para o Endpoint gerado pelo RDS e teste de persistência dos dados.
 
 ## Validação e Evidências
 
-### 1. Liberação de Tráfego no Security Group
+### 1. Configuração de Regra de Entrada no Security Group
 ![Security Group](./images/01_security_group.png)
-Configuração da regra de entrada permitindo acesso à porta 3306 via Security Group da aplicação web.
+Painel do DB Security Group exibindo a liberação da porta 3306 para conexões vindas do Web Security Group.
 
-### 2. Endpoint de Conexão do Amazon RDS
-![Endpoint RDS](./images/02_rds_endpoint.png)
-Painel de gerenciamento mostrando os dados de conectividade do banco de dados.
+### 2. Associação do DB Subnet Group
+![Subnet Group](./images/02_subnet_group.png)
+Mapeamento do grupo de subredes alocando subredes privadas em zonas de disponibilidade distintas para suporte a redundância.
 
-### 3. Confirmação do Status Multi AZ
-![Status Multi AZ](./images/03_multi_az.png)
-Verificação dos parâmetros do banco confirmando a redundância ativa em múltiplas zonas.
+### 3. Endpoint de Conexão do Amazon RDS
+![Endpoint RDS](./images/03_rds_endpoint.png)
+Exibição do ponto de acesso, porta 3306 e isolamento de rede privada gerados para o banco de dados.
+
+### 4. Configuração e Detalhes da Instância
+![Configuração RDS](./images/04_rds_configuration.png)
+Painel de configuração confirmando a engine MySQL 8 e a classe de instância db.t3.medium.
 
 ### 4. Persistência de Dados no App Web
 ![Aplicação Funcionando](./images/04_address_book.png)
