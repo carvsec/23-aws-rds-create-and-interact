@@ -43,3 +43,7 @@ Painel de configuração confirmando a engine MySQL 8 e a classe de instância d
 ### 4. Persistência de Dados no App Web
 ![Aplicação Funcionando](./images/04_address_book.png)
 Interface da aplicação web gravando e listando registros com sucesso no banco RDS.
+
+### 5. Aplicação Web Conectada ao RDS
+![Aplicação Web](./images/05_web_app.png)
+Interface da aplicação Address Book acessada via IP público do WebServer, confirmando a leitura e a persistência dos dados no Amazon RDS.
